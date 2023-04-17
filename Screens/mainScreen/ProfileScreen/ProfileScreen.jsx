@@ -1,7 +1,19 @@
-import { Text } from "react-native-web";
+import { Text, StyleSheet, View } from "react-native";
 
 const ProfileScreen = () => {
-  return <Text>ProfileScreen</Text>;
+  return (
+    <View style={styles.container}>
+      <Text>ProfileScreen</Text>
+    </View>
+  );
 };
 
 export default ProfileScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

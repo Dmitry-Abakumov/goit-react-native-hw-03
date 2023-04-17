@@ -1,4 +1,4 @@
-import { Text } from "react-native-web";
+import { Text } from "react-native";
 
 const MapScreen = () => {
   return <Text>MapScreen</Text>;

@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useEffect, useState } from "react";
 
@@ -21,49 +22,51 @@ const initialState = {
   password: "",
 };
 
-const LoginScreen = ({ navigation }) => {
-  const { fields, setFields, onSubmit } = useForm(initialState, navigation);
+const LoginScreen = ({ navigation, setIsAuth }) => {
+  const { fields, setFields, onSubmit } = useForm(initialState, setIsAuth);
   const { isKeyboardShow } = useKeyboard();
 
   return (
-    <>
-      <BgImgWrapper />
-      <FormWrapper isKeyboardShow={isKeyboardShow} pb={144} pt={32}>
-        <Text style={styles.formTitle}>Войти</Text>
-        <TextField
-          onChangeText={(text) =>
-            setFields((prevFields) => ({ ...prevFields, email: text }))
-          }
-          value={fields.email}
-          {...formProps.email}
-        />
-        <View style={styles.passwordWrapper}>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={{ flex: 1 }}>
+        <BgImgWrapper />
+        <FormWrapper isKeyboardShow={isKeyboardShow} pb={144} pt={32}>
+          <Text style={styles.formTitle}>Войти</Text>
           <TextField
             onChangeText={(text) =>
-              setFields((prevFields) => ({ ...prevFields, password: text }))
+              setFields((prevFields) => ({ ...prevFields, email: text }))
             }
-            value={fields.password}
-            {...formProps.password}
+            value={fields.email}
+            {...formProps.email}
           />
-          {/* <TouchableOpacity style={styles.passwordBtn}>
+          <View style={styles.passwordWrapper}>
+            <TextField
+              onChangeText={(text) =>
+                setFields((prevFields) => ({ ...prevFields, password: text }))
+              }
+              value={fields.password}
+              {...formProps.password}
+            />
+            {/* <TouchableOpacity style={styles.passwordBtn}>
           <Text style={styles.passwordBtnText}>Показать</Text>
         </TouchableOpacity> */}
-        </View>
-        {!isKeyboardShow && <FormBtn onSubmit={onSubmit}>Войти</FormBtn>}
+          </View>
+          {!isKeyboardShow && <FormBtn onSubmit={onSubmit}>Войти</FormBtn>}
 
-        {!isKeyboardShow && (
-          <TouchableOpacity
-            style={styles.loginRedirectLink}
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate("Registration")}
-          >
-            <Text style={styles.loginRedirectText}>
-              Нет аккуаунта? зарегистрироваться
-            </Text>
-          </TouchableOpacity>
-        )}
-      </FormWrapper>
-    </>
+          {!isKeyboardShow && (
+            <TouchableOpacity
+              style={styles.loginRedirectLink}
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate("Registration")}
+            >
+              <Text style={styles.loginRedirectText}>
+                Нет аккуаунта? зарегистрироваться
+              </Text>
+            </TouchableOpacity>
+          )}
+        </FormWrapper>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

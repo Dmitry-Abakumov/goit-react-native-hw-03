@@ -1,4 +1,4 @@
-import { Text } from "react-native-web";
+import { Text } from "react-native";
 
 const Home = () => {
   return <Text>Home</Text>;

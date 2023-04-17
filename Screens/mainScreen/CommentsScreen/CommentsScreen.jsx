@@ -1,4 +1,4 @@
-import { Text } from "react-native-web";
+import { Text } from "react-native";
 
 const CommentsScreen = () => {
   return <Text>CommentsScreen</Text>;
