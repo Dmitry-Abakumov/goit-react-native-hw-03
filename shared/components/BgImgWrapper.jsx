@@ -1,6 +1,6 @@
 import { StyleSheet, ImageBackground, Dimensions, View } from "react-native";
 
-export const BgImgWrapper = () => {
+const BgImgWrapper = () => {
   return (
     <ImageBackground
       source={require("../images/bg-img.jpg")}
