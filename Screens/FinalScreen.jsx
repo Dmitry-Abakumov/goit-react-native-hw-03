@@ -1,4 +1,10 @@
-import { TouchableOpacity, StyleSheet } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  Text,
+  useAnimatedValue,
+} from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -11,17 +17,25 @@ import PostsScreen from "../Screens/mainScreen/PostsScreen/PostsScreen";
 import CreatePostsScreen from "../Screens/mainScreen/CreatePostsScreen/CreatePostsScreen";
 import ProfileScreen from "../Screens/mainScreen/ProfileScreen/ProfileScreen";
 
+import useKeyboard from "../shared/hooks/useKeyboard";
+
 const Tab = createBottomTabNavigator();
 
 const AuthStack = createStackNavigator();
 
 const FinalScreen = ({ isAuth, setIsAuth }) => {
+  const { isKeyboardShow } = useKeyboard();
+
   if (isAuth) {
     return (
       <Tab.Navigator
         screenOptions={{
-          tabBarStyle: { ...styles.tabBarStyle },
+          tabBarStyle: {
+            ...styles.tabBarStyle,
+            display: isKeyboardShow ? "none" : "flex",
+          },
         }}
+        initialRouteName='CreatePosts'
       >
         <Tab.Screen
           name='Posts'
@@ -42,6 +56,13 @@ const FinalScreen = ({ isAuth, setIsAuth }) => {
           name='CreatePosts'
           component={CreatePostsScreen}
           options={{
+            title: "Создать публикацию",
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              color: "#212121",
+              fontFamily: "Roboto-Regular",
+              fontSize: 17,
+            },
             tabBarIcon: (focused, color, size) => (
               <Feather name='plus' size={13} color='white' />
             ),
@@ -72,10 +93,22 @@ const FinalScreen = ({ isAuth, setIsAuth }) => {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
       <AuthStack.Screen name={"Login"}>
-        {(props) => <LoginScreen {...props} setIsAuth={setIsAuth} />}
+        {(props) => (
+          <LoginScreen
+            {...props}
+            isKeyboardShow={isKeyboardShow}
+            setIsAuth={setIsAuth}
+          />
+        )}
       </AuthStack.Screen>
       <AuthStack.Screen name={"Registration"}>
-        {(props) => <RegistrationScreen {...props} setIsAuth={setIsAuth} />}
+        {(props) => (
+          <RegistrationScreen
+            {...props}
+            isKeyboardShow={isKeyboardShow}
+            setIsAuth={setIsAuth}
+          />
+        )}
       </AuthStack.Screen>
     </AuthStack.Navigator>
   );
@@ -93,5 +126,12 @@ const styles = StyleSheet.create({
   tabBarStyle: {
     paddingTop: 9,
     paddingBittom: 34,
+  },
+  createPostHeader: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  createPostTitle: {
+    textAlign: "center",
   },
 });

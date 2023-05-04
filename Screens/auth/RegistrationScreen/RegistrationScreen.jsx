@@ -11,7 +11,6 @@ import {
 } from "react-native";
 
 import BgImgWrapper from "../../../shared/components/BgImgWrapper";
-import FormWrapper from "../../../shared/components/FormWrapper";
 import FormBtn from "../../../shared/components/FormBtn";
 import TextField from "../../../shared/components/TextFIeld";
 
@@ -25,58 +24,71 @@ const initialState = {
   password: "",
 };
 
-const RegistrationScreen = ({ navigation, setIsAuth }) => {
+const RegistrationScreen = ({ isKeyboardShow, navigation, setIsAuth }) => {
   const { fields, setFields, onSubmit } = useForm(initialState, setIsAuth);
+  // const { isKeyboardShow } = useKeyboard();
 
-  const { isKeyboardShow } = useKeyboard();
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={{ flex: 1 }}>
         <BgImgWrapper />
-        <FormWrapper isKeyboardShow={isKeyboardShow} pb={78} pt={92}>
-          <Text style={styles.formTitle}>Регистрация</Text>
-          <TextField
-            onChangeText={(text) =>
-              setFields((prevFields) => ({ ...prevFields, login: text }))
-            }
-            value={fields.login}
-            {...formProps.login}
-          />
-          <TextField
-            onChangeText={(text) =>
-              setFields((prevFields) => ({ ...prevFields, email: text }))
-            }
-            value={fields.email}
-            {...formProps.email}
-          />
-          <View style={styles.passwordWrapper}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1, justifyContent: "flex-end" }}
+        >
+          <View
+            style={{
+              ...styles.formWrapper,
+              paddingBottom: isKeyboardShow ? 32 : 78,
+            }}
+          >
+            <Text style={styles.formTitle}>Регистрация</Text>
             <TextField
               onChangeText={(text) =>
-                setFields((prevFields) => ({ ...prevFields, password: text }))
+                setFields((prevFields) => ({ ...prevFields, login: text }))
               }
-              value={fields.password}
-              {...formProps.password}
+              value={fields.login}
+              {...formProps.login}
             />
-            {/* <TouchableOpacity style={styles.passwordBtn}>
+            <TextField
+              onChangeText={(text) =>
+                setFields((prevFields) => ({ ...prevFields, email: text }))
+              }
+              value={fields.email}
+              {...formProps.email}
+            />
+            <View style={styles.passwordWrapper}>
+              <TextField
+                onChangeText={(text) =>
+                  setFields((prevFields) => ({
+                    ...prevFields,
+                    password: text,
+                  }))
+                }
+                value={fields.password}
+                {...formProps.password}
+              />
+              {/* <TouchableOpacity style={styles.passwordBtn}>
           <Text style={styles.passwordBtnText}>Показать</Text>
         </TouchableOpacity> */}
-          </View>
-          {!isKeyboardShow && (
-            <FormBtn onSubmit={onSubmit}>Зарегестрироваться</FormBtn>
-          )}
+            </View>
+            {!isKeyboardShow && (
+              <FormBtn onSubmit={onSubmit}>Зарегестрироваться</FormBtn>
+            )}
 
-          {!isKeyboardShow && (
-            <TouchableOpacity
-              style={styles.loginRedirectLink}
-              activeOpacity={0.7}
-              onPress={() => navigation.navigate("Login")}
-            >
-              <Text style={styles.loginRedirectText}>
-                Уже есть аккаунт? Войти
-              </Text>
-            </TouchableOpacity>
-          )}
-        </FormWrapper>
+            {!isKeyboardShow && (
+              <TouchableOpacity
+                style={styles.loginRedirectLink}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate("Login")}
+              >
+                <Text style={styles.loginRedirectText}>
+                  Уже есть аккаунт? Войти
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -85,6 +97,16 @@ const RegistrationScreen = ({ navigation, setIsAuth }) => {
 export default RegistrationScreen;
 
 const styles = StyleSheet.create({
+  formWrapper: {
+    width: "100%",
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    alignItems: "center",
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 92,
+  },
   formTitle: {
     textAlign: "center",
     fontWeight: "bold",
@@ -96,6 +118,7 @@ const styles = StyleSheet.create({
 
   passwordWrapper: {
     position: "relative",
+    width: "100%",
   },
   passwordBtn: {
     position: "absolute",

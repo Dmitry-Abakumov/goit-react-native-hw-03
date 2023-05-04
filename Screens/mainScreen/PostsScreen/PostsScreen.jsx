@@ -1,19 +1,26 @@
-import { Text, StyleSheet, View } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-const PostsScreen = () => {
+import DefaultScreenPosts from "../../nestedScreens/DefaultScreenPosts";
+import CommentsScreen from "../../nestedScreens/CommentsScreen";
+import MapScreen from "../../nestedScreens/MapScreen";
+
+const NestedScreen = createStackNavigator();
+
+const PostsScreen = ({ route }) => {
+  const { params } = route;
   return (
-    <View style={styles.container}>
-      <Text>PostsScreen</Text>
-    </View>
+    <NestedScreen.Navigator screenOptions={{ headerShown: false }}>
+      <NestedScreen.Screen name={"DefaultScreen"}>
+        {(props) => <DefaultScreenPosts params={params} {...props} />}
+      </NestedScreen.Screen>
+      <NestedScreen.Screen name={"Comments"}>
+        {(props) => <CommentsScreen {...props} />}
+      </NestedScreen.Screen>
+      <NestedScreen.Screen name={"Map"}>
+        {(props) => <MapScreen {...props} />}
+      </NestedScreen.Screen>
+    </NestedScreen.Navigator>
   );
 };
 
 export default PostsScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

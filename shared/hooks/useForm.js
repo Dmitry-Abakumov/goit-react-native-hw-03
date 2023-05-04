@@ -5,7 +5,8 @@ const useForm = (initialState, setIsAuth) => {
   const [fields, setFields] = useState(initialState);
 
   const onSubmit = () => {
-    setIsAuth(true);
+    if (setIsAuth) setIsAuth(true);
+
     setFields(initialState);
     Keyboard.dismiss();
   };

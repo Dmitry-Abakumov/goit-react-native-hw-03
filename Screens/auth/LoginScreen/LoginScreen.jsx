@@ -5,11 +5,12 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useEffect, useState } from "react";
 
 import BgImgWrapper from "../../../shared/components/BgImgWrapper";
-import FormWrapper from "../../../shared/components/FormWrapper";
 import FormBtn from "../../../shared/components/FormBtn";
 import TextField from "../../../shared/components/TextFIeld";
 
@@ -22,49 +23,62 @@ const initialState = {
   password: "",
 };
 
-const LoginScreen = ({ navigation, setIsAuth }) => {
+const LoginScreen = ({ isKeyboardShow, navigation, setIsAuth }) => {
   const { fields, setFields, onSubmit } = useForm(initialState, setIsAuth);
-  const { isKeyboardShow } = useKeyboard();
+  // const { isKeyboardShow } = useKeyboard();
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={{ flex: 1 }}>
         <BgImgWrapper />
-        <FormWrapper isKeyboardShow={isKeyboardShow} pb={144} pt={32}>
-          <Text style={styles.formTitle}>Войти</Text>
-          <TextField
-            onChangeText={(text) =>
-              setFields((prevFields) => ({ ...prevFields, email: text }))
-            }
-            value={fields.email}
-            {...formProps.email}
-          />
-          <View style={styles.passwordWrapper}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1, justifyContent: "flex-end" }}
+        >
+          <View
+            style={{
+              ...styles.formWrapper,
+              paddingBottom: isKeyboardShow ? 32 : 144,
+            }}
+          >
+            <Text style={styles.formTitle}>Войти</Text>
             <TextField
               onChangeText={(text) =>
-                setFields((prevFields) => ({ ...prevFields, password: text }))
+                setFields((prevFields) => ({ ...prevFields, email: text }))
               }
-              value={fields.password}
-              {...formProps.password}
+              value={fields.email}
+              {...formProps.email}
             />
-            {/* <TouchableOpacity style={styles.passwordBtn}>
+            <View style={styles.passwordWrapper}>
+              <TextField
+                onChangeText={(text) =>
+                  setFields((prevFields) => ({
+                    ...prevFields,
+                    password: text,
+                  }))
+                }
+                value={fields.password}
+                {...formProps.password}
+              />
+              {/* <TouchableOpacity style={styles.passwordBtn}>
           <Text style={styles.passwordBtnText}>Показать</Text>
         </TouchableOpacity> */}
-          </View>
-          {!isKeyboardShow && <FormBtn onSubmit={onSubmit}>Войти</FormBtn>}
+            </View>
+            {!isKeyboardShow && <FormBtn onSubmit={onSubmit}>Войти</FormBtn>}
 
-          {!isKeyboardShow && (
-            <TouchableOpacity
-              style={styles.loginRedirectLink}
-              activeOpacity={0.7}
-              onPress={() => navigation.navigate("Registration")}
-            >
-              <Text style={styles.loginRedirectText}>
-                Нет аккуаунта? зарегистрироваться
-              </Text>
-            </TouchableOpacity>
-          )}
-        </FormWrapper>
+            {!isKeyboardShow && (
+              <TouchableOpacity
+                style={styles.loginRedirectLink}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate("Registration")}
+              >
+                <Text style={styles.loginRedirectText}>
+                  Нет аккуаунта? зарегистрироваться
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -73,6 +87,16 @@ const LoginScreen = ({ navigation, setIsAuth }) => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+  formWrapper: {
+    width: "100%",
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    alignItems: "center",
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 32,
+  },
   formTitle: {
     textAlign: "center",
     fontWeight: "bold",
@@ -84,6 +108,7 @@ const styles = StyleSheet.create({
 
   passwordWrapper: {
     position: "relative",
+    width: "100%",
   },
   passwordBtn: {
     position: "absolute",
