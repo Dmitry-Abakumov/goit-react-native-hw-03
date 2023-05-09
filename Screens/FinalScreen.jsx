@@ -5,6 +5,7 @@ import {
   Text,
   useAnimatedValue,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -19,12 +20,15 @@ import ProfileScreen from "../Screens/mainScreen/ProfileScreen/ProfileScreen";
 
 import useKeyboard from "../shared/hooks/useKeyboard";
 
+import { userSignOut } from "../redux/auth/authOperations";
+
 const Tab = createBottomTabNavigator();
 
 const AuthStack = createStackNavigator();
 
-const FinalScreen = ({ isAuth, setIsAuth }) => {
+const FinalScreen = ({ isAuth }) => {
   const { isKeyboardShow } = useKeyboard();
+  const dispatch = useDispatch();
 
   if (isAuth) {
     return (
@@ -44,10 +48,17 @@ const FinalScreen = ({ isAuth, setIsAuth }) => {
             tabBarIcon: (focused, color, size) => (
               <SimpleLineIcons name='grid' size={24} color='black' />
             ),
+            // headerTitleAlign: "right",
             tabBarShowLabel: false,
-            headerTitle: () => (
-              <TouchableOpacity onPress={() => setIsAuth(false)}>
-                <MaterialIcons name='logout' size={24} color='black' />
+            headerTitle: "",
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.logoutIconWrap}
+                onPress={() => {
+                  dispatch(userSignOut());
+                }}
+              >
+                <MaterialIcons name='logout' size={24} color='#BDBDBD' />
               </TouchableOpacity>
             ),
           }}
@@ -93,21 +104,11 @@ const FinalScreen = ({ isAuth, setIsAuth }) => {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
       <AuthStack.Screen name={"Login"}>
-        {(props) => (
-          <LoginScreen
-            {...props}
-            isKeyboardShow={isKeyboardShow}
-            setIsAuth={setIsAuth}
-          />
-        )}
+        {(props) => <LoginScreen {...props} isKeyboardShow={isKeyboardShow} />}
       </AuthStack.Screen>
       <AuthStack.Screen name={"Registration"}>
         {(props) => (
-          <RegistrationScreen
-            {...props}
-            isKeyboardShow={isKeyboardShow}
-            setIsAuth={setIsAuth}
-          />
+          <RegistrationScreen {...props} isKeyboardShow={isKeyboardShow} />
         )}
       </AuthStack.Screen>
     </AuthStack.Navigator>
@@ -133,5 +134,8 @@ const styles = StyleSheet.create({
   },
   createPostTitle: {
     textAlign: "center",
+  },
+  logoutIconWrap: {
+    marginRight: 16,
   },
 });

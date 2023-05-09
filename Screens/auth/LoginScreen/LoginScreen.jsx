@@ -9,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 import BgImgWrapper from "../../../shared/components/BgImgWrapper";
 import FormBtn from "../../../shared/components/FormBtn";
@@ -18,14 +19,21 @@ import useKeyboard from "../../../shared/hooks/useKeyboard";
 import useForm from "../../../shared/hooks/useForm";
 import formProps from "./formProps";
 
+import { signIn } from "../../../redux/auth/authOperations";
+
 const initialState = {
   email: "",
   password: "",
 };
 
-const LoginScreen = ({ isKeyboardShow, navigation, setIsAuth }) => {
-  const { fields, setFields, onSubmit } = useForm(initialState, setIsAuth);
-  // const { isKeyboardShow } = useKeyboard();
+const LoginScreen = ({ isKeyboardShow, navigation }) => {
+  const { fields, setFields, onSubmit } = useForm(initialState);
+  const dispatch = useDispatch();
+
+  const onLoginFormSubmit = () => {
+    dispatch(signIn(fields));
+    onSubmit();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -64,7 +72,9 @@ const LoginScreen = ({ isKeyboardShow, navigation, setIsAuth }) => {
           <Text style={styles.passwordBtnText}>Показать</Text>
         </TouchableOpacity> */}
             </View>
-            {!isKeyboardShow && <FormBtn onSubmit={onSubmit}>Войти</FormBtn>}
+            {!isKeyboardShow && (
+              <FormBtn onSubmit={onLoginFormSubmit}>Войти</FormBtn>
+            )}
 
             {!isKeyboardShow && (
               <TouchableOpacity

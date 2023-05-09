@@ -1,6 +1,6 @@
 const formProps = {
-  login: {
-    name: "login",
+  name: {
+    name: "name",
     placeholder: "Логин",
     placeholderTextColor: "#BDBDBD",
   },

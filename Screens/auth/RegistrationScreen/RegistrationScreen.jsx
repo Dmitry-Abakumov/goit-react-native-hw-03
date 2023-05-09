@@ -9,24 +9,33 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from "react-native";
+import { useDispatch } from "react-redux";
 
 import BgImgWrapper from "../../../shared/components/BgImgWrapper";
 import FormBtn from "../../../shared/components/FormBtn";
 import TextField from "../../../shared/components/TextFIeld";
 
-import useKeyboard from "../../../shared/hooks/useKeyboard";
 import useForm from "../../../shared/hooks/useForm";
 import formProps from "./formProps";
 
+import { signUp } from "../../../redux/auth/authOperations";
+
 const initialState = {
-  login: "",
+  name: "",
   email: "",
   password: "",
 };
 
-const RegistrationScreen = ({ isKeyboardShow, navigation, setIsAuth }) => {
-  const { fields, setFields, onSubmit } = useForm(initialState, setIsAuth);
-  // const { isKeyboardShow } = useKeyboard();
+const RegistrationScreen = ({ isKeyboardShow, navigation }) => {
+  const { fields, setFields, onSubmit } = useForm(initialState);
+  const dispatch = useDispatch();
+
+  const onRegisterFormSubmit = () => {
+    const { email, password } = fields;
+
+    dispatch(signUp(fields));
+    onSubmit();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -45,10 +54,10 @@ const RegistrationScreen = ({ isKeyboardShow, navigation, setIsAuth }) => {
             <Text style={styles.formTitle}>Регистрация</Text>
             <TextField
               onChangeText={(text) =>
-                setFields((prevFields) => ({ ...prevFields, login: text }))
+                setFields((prevFields) => ({ ...prevFields, name: text }))
               }
-              value={fields.login}
-              {...formProps.login}
+              value={fields.name}
+              {...formProps.name}
             />
             <TextField
               onChangeText={(text) =>
@@ -73,7 +82,9 @@ const RegistrationScreen = ({ isKeyboardShow, navigation, setIsAuth }) => {
         </TouchableOpacity> */}
             </View>
             {!isKeyboardShow && (
-              <FormBtn onSubmit={onSubmit}>Зарегестрироваться</FormBtn>
+              <FormBtn onSubmit={onRegisterFormSubmit}>
+                Зарегестрироваться
+              </FormBtn>
             )}
 
             {!isKeyboardShow && (
