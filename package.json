@@ -24,6 +24,7 @@
     "expo-media-library": "~15.0.0",
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.4",
+    "expo-updates": "^0.16.4",
     "firebase": "^9.21.0",
     "nanoid": "^4.0.2",
     "ngrok": "^4.3.3",
