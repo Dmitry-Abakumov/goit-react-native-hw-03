@@ -17,6 +17,10 @@ import { useState, useEffect } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 import { SimpleLineIcons } from "@expo/vector-icons";
+// import { nanoid } from "nanoid";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 import TextField from "../../../shared/components/TextFIeld";
 import FormBtn from "../../../shared/components/FormBtn";
@@ -24,17 +28,21 @@ import FormBtn from "../../../shared/components/FormBtn";
 import useForm from "../../../shared/hooks/useForm";
 import formProps from "./formProps";
 
+import { db } from "../../../firebase/config";
+
 const initialState = {
   postName: "",
   location: "",
 };
 
-const CreatePostsScreen = ({ navigation, isKeyboardShow }) => {
+const CreatePostsScreen = ({ navigation }) => {
   const [loaded, setLoaded] = useState(false);
   const [cameraRef, setCameraRef] = useState(null);
   const [photo, setPhoto] = useState(null);
   const { fields, setFields, onSubmit } = useForm(initialState);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+
+  const userId = useSelector(({ auth: { userId } }) => userId);
 
   useEffect(() => {
     (async () => {
@@ -57,7 +65,29 @@ const CreatePostsScreen = ({ navigation, isKeyboardShow }) => {
       };
     }
 
-    navigation.navigate("Posts", { photo, coords, postData: fields });
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const id = Date.now().toString();
+
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${id}`);
+
+    await uploadBytes(storageRef, file);
+
+    const photoLink = await getDownloadURL(storageRef);
+
+    const docData = {
+      photo: photoLink,
+      coords,
+      postData: fields,
+      postId: id,
+      userId,
+    };
+
+    await setDoc(doc(db, "posts", id), docData);
+
+    await navigation.navigate("Posts");
+
     setPhoto(null);
     onSubmit();
   };

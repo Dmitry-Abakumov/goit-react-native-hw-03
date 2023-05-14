@@ -28,9 +28,6 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      {/* <NavigationContainer>
-        <FinalScreen isAuth={isAuth} setIsAuth={setIsAuth} />
-      </NavigationContainer> */}
       <Main />
     </Provider>
   );

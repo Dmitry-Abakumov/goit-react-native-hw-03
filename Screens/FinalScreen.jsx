@@ -10,7 +10,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 
 import RegistrationScreen from "../Screens/auth/RegistrationScreen/RegistrationScreen";
 import LoginScreen from "../Screens/auth/LoginScreen/LoginScreen";
@@ -20,7 +19,7 @@ import ProfileScreen from "../Screens/mainScreen/ProfileScreen/ProfileScreen";
 
 import useKeyboard from "../shared/hooks/useKeyboard";
 
-import { userSignOut } from "../redux/auth/authOperations";
+// import { userSignOut } from "../redux/auth/authOperations";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,33 +33,30 @@ const FinalScreen = ({ isAuth }) => {
     return (
       <Tab.Navigator
         screenOptions={{
-          tabBarStyle: {
-            ...styles.tabBarStyle,
-            display: isKeyboardShow ? "none" : "flex",
-          },
+          tabBarHideOnKeyboard: true,
         }}
-        initialRouteName='CreatePosts'
+        initialRouteName='PostsScreen'
       >
         <Tab.Screen
           name='Posts'
           component={PostsScreen}
           options={{
+            headerShown: false,
             tabBarIcon: (focused, color, size) => (
               <SimpleLineIcons name='grid' size={24} color='black' />
             ),
-            // headerTitleAlign: "right",
             tabBarShowLabel: false,
-            headerTitle: "",
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.logoutIconWrap}
-                onPress={() => {
-                  dispatch(userSignOut());
-                }}
-              >
-                <MaterialIcons name='logout' size={24} color='#BDBDBD' />
-              </TouchableOpacity>
-            ),
+            // headerTitle: "",
+            // headerRight: () => (
+            // <TouchableOpacity
+            //   style={styles.logoutIconWrap}
+            //   onPress={() => {
+            //     dispatch(userSignOut());
+            //   }}
+            // >
+            //   <MaterialIcons name='logout' size={24} color='#BDBDBD' />
+            // </TouchableOpacity>
+            // ),
           }}
         />
         <Tab.Screen
@@ -91,6 +87,24 @@ const FinalScreen = ({ isAuth }) => {
           name='Profile'
           component={ProfileScreen}
           options={{
+            headerShown: false,
+            // title: "Профиль",
+            // headerTitleAlign: "center",
+            // headerTitleStyle: {
+            //   color: "#212121",
+            //   fontFamily: "Roboto-Regular",
+            //   fontSize: 17,
+            // },
+            // headerRight: () => (
+            //   <TouchableOpacity
+            //     style={styles.logoutIconWrap}
+            //     onPress={() => {
+            //       dispatch(userSignOut());
+            //     }}
+            //   >
+            //     <MaterialIcons name='logout' size={24} color='#BDBDBD' />
+            //   </TouchableOpacity>
+            // ),
             tabBarIcon: (focused, color, size) => (
               <Feather name='user' size={24} color='black' />
             ),
