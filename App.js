@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFonts } from "expo-font";
 import { useEffect, useCallback } from "react";
 import { Provider } from "react-redux";
+import "react-native-gesture-handler";
 
 import { store } from "./redux/store";
 

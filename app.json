@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "goit-react-native-hw-05",
-    "slug": "goit-react-native-hw-05",
+    "name": "goit-project",
+    "slug": "goit-project",
     "version": "1.0.0",
-    "orientation": "auto",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -21,10 +21,22 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dmitry290303.goitproject"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bc74344d-38e0-41eb-8d28-7eafdd20e845"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/bc74344d-38e0-41eb-8d28-7eafdd20e845"
     }
   }
 }
