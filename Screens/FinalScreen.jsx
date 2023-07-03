@@ -46,17 +46,6 @@ const FinalScreen = ({ isAuth }) => {
               <SimpleLineIcons name='grid' size={24} color='black' />
             ),
             tabBarShowLabel: false,
-            // headerTitle: "",
-            // headerRight: () => (
-            // <TouchableOpacity
-            //   style={styles.logoutIconWrap}
-            //   onPress={() => {
-            //     dispatch(userSignOut());
-            //   }}
-            // >
-            //   <MaterialIcons name='logout' size={24} color='#BDBDBD' />
-            // </TouchableOpacity>
-            // ),
           }}
         />
         <Tab.Screen

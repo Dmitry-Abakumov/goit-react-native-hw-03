@@ -17,7 +17,6 @@ import { useState, useEffect } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 import { SimpleLineIcons } from "@expo/vector-icons";
-// import { nanoid } from "nanoid";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { useSelector } from "react-redux";

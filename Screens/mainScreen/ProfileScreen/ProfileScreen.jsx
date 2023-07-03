@@ -89,7 +89,6 @@ const ProfileScreen = ({ navigation }) => {
                       size={18}
                       color='#BDBDBD'
                     />
-                    {/* <Text style={styles.commentIconText}>0</Text> */}
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() =>
